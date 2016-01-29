@@ -47,12 +47,12 @@ public class Result {
         return true;
     }
 
-    public func fetch() -> [String : Value]? {
+    public func fetch() -> Row? {
         guard (self.result != nil) else {
             return nil;
         }
 
-        var result: [String: Value] = [:];
+        var result: [String : Value] = [:];
 
         let row = mysql_fetch_row(self.result!);
         if (row == nil) {
@@ -75,7 +75,7 @@ public class Result {
             }
         }
 
-        return result;
+        return Row(values : result);
     }
 
     public func clear() {

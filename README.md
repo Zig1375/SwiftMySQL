@@ -6,6 +6,15 @@ Now supported only Swift 2.2dev (minimal snapshot from January 25, 2016)
 $ sudo apt-get install libmysqlclient-dev
 ```
 
+In `Package.swift`:
+```swift
+dependencies: [
+    // Other your packages
+    .Package(url: "https://github.com/Zig1375/MySQL.git", majorVersion: 1)
+]
+```
+
+
 ## Introduction
 
 This is a Swift driver for mysql.
@@ -41,7 +50,14 @@ while let res = result.fetch() {
 ### Fast fetch row
 
 ```swift
-let result = try conn.fetchRow("select * from my_table where id = 1");
+let result = try conn.fetchRow("select * from my_table where id = 1");  // Returned 'Row?'
+print(result);
+```
+
+### Fast fetch all row
+
+```swift
+let result = try conn.fetchAll("select * from my_table");               // Returned '[Row]'
 print(result);
 ```
 
@@ -69,8 +85,10 @@ if (result.nextRowset()) {
 
 ## Results
 
-Every row has type `[String : Value]?`.  
+Every row has type `Row`.
+`Row` can return value in any types.
 
+### Sample:
 ```swift
 let res = result.fetch()!;
 print( res["id"].integer );  // Returned 'Int?'

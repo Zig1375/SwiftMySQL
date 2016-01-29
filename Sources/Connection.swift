@@ -128,12 +128,22 @@ public class Connection {
     }
 
 
-    public func fetchRow(sql : String, values : [String]? = nil) throws -> [String : Value]? {
+    public func fetchRow(sql : String, values : [String]? = nil) throws -> Row? {
         let result = try query(sql, values : values);
         let row = result.fetch();
-        result.clear();
 
         return row;
+    }
+
+    public func fetchAll(sql : String, values : [String]? = nil) throws -> [Row] {
+        let result = try query(sql, values : values);
+
+        var res = [Row]();
+        while let row = result.fetch() {
+            res.append(row);
+        }
+
+        return res;
     }
 
 
