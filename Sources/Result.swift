@@ -78,7 +78,7 @@ public class Result {
         return Row(values : result);
     }
 
-    public func clear() {
+    private func clear() {
         guard (self.result != nil) else {
             return;
         }

@@ -7,7 +7,7 @@ public class Connection {
     private var state : ConnectionState = ConnectionState.DISCONNECTED;
     private let connection : UnsafeMutablePointer<st_mysql>;
 
-    init(config : ConnectionConfig) {
+    public init(config : ConnectionConfig) {
         self.config = config;
         self.connection  = mysql_init(nil);
     }
@@ -95,17 +95,11 @@ public class Connection {
         }
     }
 
-
-    public func prepare(sql : String, values : [String]? = nil) -> String {
-        if (values == nil) {
-            return sql;
-        }
-
-        // ToDo
-        return sql;
+    public func prepare(sql : String, values : [String?]? = nil) -> Query {
+        return Query(connection : self, sql : sql, values : values);
     }
 
-    public func query(sql : String, values : [String]? = nil) throws -> Result {
+    public func query(sql : String, values : [String?]? = nil) throws -> Result {
         try execute(sql, values : values);
 
         let result = mysql_store_result(self.connection);
@@ -116,26 +110,38 @@ public class Connection {
         return Result(connection : self, mysql_conn : self.connection, result : result);
     }
 
-    public func execute(sql : String, values : [String]? = nil) throws {
+    public func query(q : Query) throws -> Result {
+        return try query(q.toSql());
+    }
+
+    public func execute(sql : String, values : [String?]? = nil) throws {
         if (self.state != ConnectionState.CONNECTED) {
             throw MysqlError.NotConnected;
         }
 
+        var nsql = sql;
+        if (values != nil) {
+            nsql = prepare(sql, values : values!).toSql();
+        }
+
         /// mysql_query(MYSQL *mysql, const char *q);
-        if (mysql_query(self.connection,  prepare(sql, values : values)) == 1) {
+        if (mysql_query(self.connection,  nsql) == 1) {
             throw MysqlError.Error(error : getText(mysql_error(self.connection)), errno : mysql_errno(self.connection));
         }
     }
 
+    public func execute(q : Query) throws {
+        try execute(q.toSql());
+    }
 
-    public func fetchRow(sql : String, values : [String]? = nil) throws -> Row? {
+    public func fetchRow(sql : String, values : [String?]? = nil) throws -> Row? {
         let result = try query(sql, values : values);
         let row = result.fetch();
 
         return row;
     }
 
-    public func fetchAll(sql : String, values : [String]? = nil) throws -> [Row] {
+    public func fetchAll(sql : String, values : [String?]? = nil) throws -> [Row] {
         let result = try query(sql, values : values);
 
         var res = [Row]();

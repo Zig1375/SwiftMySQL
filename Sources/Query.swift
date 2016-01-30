@@ -2,13 +2,20 @@ public class Query {
     let connection : Connection;
     public var sql : String;
     public var values : [String : String] = [String : String]();
+    private var readySql : String;
+    private var lastCntValues : Int = 0;
 
-    init(connection : Connection, sql : String, value : [String]?) {
+    init(connection : Connection, sql : String, values : [String?]?) {
         self.sql = sql;
+        self.readySql = sql;
         self.connection = connection;
 
         // ToDo
-        if (value != nil) { print("Has Value") }
+        if (values != nil) {
+            for (key, value) in values!.enumerate() {
+                bind(String(key), value : value);
+            }
+        }
     }
 
     public func bind(key : String, value : Int) {
@@ -64,21 +71,16 @@ public class Query {
     }
 
     public func toSql() -> String {
-        if (values.count == 0) {
-            return sql;
+        if ((lastCntValues == values.count)) {
+            return self.readySql;
         }
 
-        var nsql : String = sql;
+        self.readySql = sql;
         for (key, value) in values {
-            nsql = replace(nsql, search : ":\(key)", replacement : value);
+            self.readySql = self.readySql.replace("\\{\(key)\\}", template : value);
         }
 
-        return nsql;
-    }
-
-    private func replace(st : String, search : String, replacement : String) -> String {
-        return st;
-        // ToDo Now Sting has no method stringByReplacingOccurrencesOfString is Swift 2.2
-        // return st.stringByReplacingOccurrencesOfString(search, withString: replacement, options: NSStringCompareOptions.LiteralSearch, range: nil)
+        lastCntValues = values.count;
+        return self.readySql;
     }
 }
