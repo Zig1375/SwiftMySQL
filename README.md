@@ -82,6 +82,32 @@ if (result.nextRowset()) {
 }
 ```
 
+### Preparing Queries
+You can use `Parameters` to prepare a query with multiple insertion points, utilizing the proper escaping for ids and values. A simple example of this follows:
+
+```swift
+let p = Parameters(sql : "SELECT * FROM test.new_table where col1 = {0} and col2 = {1};", values : ["foo", "bar"]);
+let result = try conn.query(p);
+while let res = result.fetch() {
+    print(res);
+}
+```
+
+Or other variant:
+
+```swift
+let p = Parameters(sql : "SELECT * FROM test.new_table where col1 = {col1} and col2 = {col2};");
+p.bind("col1", 123);
+p.bind("col2", "foo");
+
+let result = try conn.query(p);
+while let res = result.fetch() {
+    print(res);
+}
+```
+
+Following this you then have a valid, escaped query that you can then send to the database safely. This is useful if you are looking to prepare the query before actually sending it to the database.
+
 
 ## Results
 

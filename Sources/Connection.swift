@@ -95,10 +95,6 @@ public class Connection {
         }
     }
 
-    public func prepare(sql : String, values : [String?]? = nil) -> Query {
-        return Query(connection : self, sql : sql, values : values);
-    }
-
     public func query(sql : String, values : [String?]? = nil) throws -> Result {
         try execute(sql, values : values);
 
@@ -110,8 +106,8 @@ public class Connection {
         return Result(connection : self, mysql_conn : self.connection, result : result);
     }
 
-    public func query(q : Query) throws -> Result {
-        return try query(q.toSql());
+    public func query(p : Parameters) throws -> Result {
+        return try query(p.toSql(self));
     }
 
     public func execute(sql : String, values : [String?]? = nil) throws {
@@ -121,7 +117,7 @@ public class Connection {
 
         var nsql = sql;
         if (values != nil) {
-            nsql = prepare(sql, values : values!).toSql();
+            nsql =  Parameters(sql : sql, values : values!).toSql(self);
         }
 
         /// mysql_query(MYSQL *mysql, const char *q);
@@ -130,8 +126,8 @@ public class Connection {
         }
     }
 
-    public func execute(q : Query) throws {
-        try execute(q.toSql());
+    public func execute(p : Parameters) throws {
+        try execute(p.toSql(self));
     }
 
     public func fetchRow(sql : String, values : [String?]? = nil) throws -> Row? {
@@ -141,8 +137,26 @@ public class Connection {
         return row;
     }
 
+    public func fetchRow(p : Parameters) throws -> Row? {
+        let result = try query(p);
+        let row = result.fetch();
+
+        return row;
+    }
+
     public func fetchAll(sql : String, values : [String?]? = nil) throws -> [Row] {
         let result = try query(sql, values : values);
+
+        var res = [Row]();
+        while let row = result.fetch() {
+            res.append(row);
+        }
+
+        return res;
+    }
+
+    public func fetchAll(p : Parameters) throws -> [Row] {
+        let result = try query(p);
 
         var res = [Row]();
         while let row = result.fetch() {
@@ -189,9 +203,9 @@ public class Connection {
         return getText(mysql_get_ssl_cipher(self.connection));
     }
 
-    public func ping() throws -> Bool {
+    public func ping() -> Bool {
         if (self.state != ConnectionState.CONNECTED) {
-            throw MysqlError.NotConnected;
+            return false;
         }
 
         if (mysql_ping(self.connection) > 0) {
