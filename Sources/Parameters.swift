@@ -3,6 +3,10 @@ public class Parameters {
     private var values : [String : String] = [String : String]();
     private var needEncdode : [String : Bool] = [String : Bool]();
 
+    public init(sql : String) {
+        self.sql = sql;
+    }
+
     public init(sql : String, values : [String?]?) {
         self.sql = sql;
 
@@ -65,7 +69,7 @@ public class Parameters {
     }
 
     public func bind(key : String, value : Bool) {
-        values[key] = (value) ? "\"true\"" : "\"false\"";
+        values[key] = (value) ? 1 : 0;
         needEncdode[key] = false;
     }
 

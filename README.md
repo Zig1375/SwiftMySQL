@@ -97,8 +97,8 @@ Or other variant:
 
 ```swift
 let p = Parameters(sql : "SELECT * FROM test.new_table where col1 = {col1} and col2 = {col2};");
-p.bind("col1", 123);
-p.bind("col2", "foo");
+p.bind("col1", value : 123);
+p.bind("col2", value : "foo");
 
 let result = try conn.query(p);
 while let res = result.fetch() {
