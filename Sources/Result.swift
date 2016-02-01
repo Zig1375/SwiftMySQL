@@ -1,5 +1,9 @@
 import CMySQL;
-import Glibc;
+#if os(Linux)
+import Glibc
+#else
+import Darwin
+#endif
 
 public class Result {
     private let connection : Connection;
