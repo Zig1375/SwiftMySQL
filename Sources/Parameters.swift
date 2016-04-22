@@ -69,7 +69,7 @@ public class Parameters {
     }
 
     public func bind(key : String, value : Bool) {
-        values[key] = (value) ? 1 : 0;
+        values[key] = (value) ? "1" : "0";
         needEncdode[key] = false;
     }
 
