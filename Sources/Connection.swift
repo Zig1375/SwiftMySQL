@@ -22,7 +22,7 @@ public class Connection {
         }
 
         if (mysql_real_connect(self.connection, config.host, config.user, config.password, config.database, config.port, nil, config.flags.rawValue) == nil) {
-            throw MysqlError.Error(error : getText(mysql_error(self.connection)), errno : mysql_errno(self.connection));
+            throw MysqlError.Error(error : getText(buf : mysql_error(self.connection)), errno : mysql_errno(self.connection));
         }
 
         self.state = ConnectionState.CONNECTED;
@@ -33,7 +33,7 @@ public class Connection {
             throw MysqlError.NotConnected;
         }
 
-        return getText(mysql_character_set_name(self.connection));
+        return getText(buf : mysql_character_set_name(self.connection));
     }
 
     public func setCharacterName(charset : String) throws -> Bool {
@@ -61,15 +61,15 @@ public class Connection {
     }
 
     public func beginTransaction() throws {
-        try execute("START TRANSACTION");
+        try execute(sql : "START TRANSACTION");
     }
 
     public func commit() throws {
-        try execute("COMMIT");
+        try execute(sql : "COMMIT");
     }
 
     public func rollback() throws {
-        try execute("ROLLBACK");
+        try execute(sql : "ROLLBACK");
     }
 
     public func close() {
@@ -80,34 +80,33 @@ public class Connection {
     }
 
     public func escape(value : String) -> String {
-        let readBuffer  = UnsafeMutablePointer<CChar>.alloc(4098)
+        let readBuffer  = UnsafeMutablePointer<CChar>(allocatingCapacity : 4098)
         let status = mysql_real_escape_string(self.connection, readBuffer, value, UInt(value.characters.count));
 
         defer {
-            readBuffer.destroy();
-            readBuffer.dealloc(4098);
+            readBuffer.deinitialize(count : 4098);
        }
 
         if (status > 0) {
-            return getText(readBuffer);
+            return getText(buf : readBuffer);
         } else {
             return "";
         }
     }
 
     public func query(sql : String, values : [String?]? = nil) throws -> Result {
-        try execute(sql, values : values);
+        try execute(sql : sql, values : values);
 
         let result = mysql_store_result(self.connection);
         if (result == nil) {
-            throw MysqlError.Error(error : getText(mysql_error(self.connection)), errno : mysql_errno(self.connection));
+            throw MysqlError.Error(error : getText(buf : mysql_error(self.connection)), errno : mysql_errno(self.connection));
         }
 
         return Result(connection : self, mysql_conn : self.connection, result : result);
     }
 
     public func query(p : Parameters) throws -> Result {
-        return try query(p.toSql(self));
+        return try query(sql : p.toSql(conn : self));
     }
 
     public func execute(sql : String, values : [String?]? = nil) throws {
@@ -117,35 +116,35 @@ public class Connection {
 
         var nsql = sql;
         if (values != nil) {
-            nsql =  Parameters(sql : sql, values : values!).toSql(self);
+            nsql =  Parameters(sql : sql, values : values!).toSql(conn : self);
         }
 
         /// mysql_query(MYSQL *mysql, const char *q);
         if (mysql_query(self.connection,  nsql) == 1) {
-            throw MysqlError.Error(error : getText(mysql_error(self.connection)), errno : mysql_errno(self.connection));
+            throw MysqlError.Error(error : getText(buf : mysql_error(self.connection)), errno : mysql_errno(self.connection));
         }
     }
 
     public func execute(p : Parameters) throws {
-        try execute(p.toSql(self));
+        try execute(sql : p.toSql(conn : self));
     }
 
     public func fetchRow(sql : String, values : [String?]? = nil) throws -> Row? {
-        let result = try query(sql, values : values);
+        let result = try query(sql : sql, values : values);
         let row = result.fetch();
 
         return row;
     }
 
     public func fetchRow(p : Parameters) throws -> Row? {
-        let result = try query(p);
+        let result = try query(p : p);
         let row = result.fetch();
 
         return row;
     }
 
     public func fetchAll(sql : String, values : [String?]? = nil) throws -> [Row] {
-        let result = try query(sql, values : values);
+        let result = try query(sql : sql, values : values);
 
         var res = [Row]();
         while let row = result.fetch() {
@@ -156,7 +155,7 @@ public class Connection {
     }
 
     public func fetchAll(p : Parameters) throws -> [Row] {
-        let result = try query(p);
+        let result = try query(p : p);
 
         var res = [Row]();
         while let row = result.fetch() {
@@ -184,7 +183,7 @@ public class Connection {
     }
 
     public func mysqlError() -> String {
-        return getText(mysql_error(self.connection));
+        return getText(buf : mysql_error(self.connection));
     }
 
     public func sqlState() throws -> String? {
@@ -192,7 +191,7 @@ public class Connection {
             throw MysqlError.NotConnected;
         }
 
-        return getText(mysql_sqlstate(self.connection));
+        return getText(buf : mysql_sqlstate(self.connection));
     }
 
     public func sslSet(key : String, cert : String, ca : String, capath : String, cipher : String) -> Bool {
@@ -200,7 +199,7 @@ public class Connection {
     }
 
     public func sslGet() -> String {
-        return getText(mysql_get_ssl_cipher(self.connection));
+        return getText(buf : mysql_get_ssl_cipher(self.connection));
     }
 
     public func ping() -> Bool {
@@ -217,7 +216,7 @@ public class Connection {
     }
 
     private func getText(buf : UnsafePointer<Int8>) -> String {
-        if let utf8String = String.fromCString(buf) {
+        if let utf8String = String.init(validatingUTF8 : buf) {
             return utf8String;
         }
 

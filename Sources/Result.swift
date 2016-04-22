@@ -65,12 +65,12 @@ public class Result {
 
         let lengths = mysql_fetch_lengths(self.result!)
 
-        for (index, field) in fields().enumerate() {
+        for (index, field) in fields().enumerated() {
             let val = row[index]
             if (val != nil) {
                 let length = Int(lengths[index]);
 
-                var buffer = [UInt8](count: length, repeatedValue: 0);
+                var buffer = [UInt8](repeating: 0, count: length);
                 memcpy(&buffer, val, length);
 
                 result[field.name] = Value(data : buffer);
@@ -112,7 +112,7 @@ public class Result {
     };
 
     private func getText(buf : UnsafePointer<Int8>) -> String {
-        if let utf8String = String.fromCString(buf) {
+        if let utf8String = String.init(validatingUTF8 : buf) {
             return utf8String;
         }
 

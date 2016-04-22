@@ -12,8 +12,8 @@ public class Parameters {
 
         // ToDo
         if (values != nil) {
-            for (key, value) in values!.enumerate() {
-                bind(String(key), value : value);
+            for (key, value) in values!.enumerated() {
+                bind(key : String(key), value : value);
             }
         }
     }
@@ -88,9 +88,9 @@ public class Parameters {
         for (key, value) in values {
             let b = needEncdode[key];
             if ((b != nil) && (b!)) {
-                nsql = nsql.replace("\\{\(key)\\}", template : "\"" + conn.escape(value) + "\"");
+                nsql = nsql.replace(pattern : "\\{\(key)\\}", template : "\"" + conn.escape(value : value) + "\"");
             } else {
-                nsql = nsql.replace("\\{\(key)\\}", template : value);
+                nsql = nsql.replace(pattern : "\\{\(key)\\}", template : value);
             }
         }
 

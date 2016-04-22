@@ -28,7 +28,7 @@ public class Pool {
             }
         }
 
-        let p = pool.removeAtIndex(0);
+        let p = pool.remove(at : 0);
 
         if (!p.ping()) {
             // DISCONNECTED

@@ -8,7 +8,7 @@ public class ConnectionConfig {
     public var database : String;
     public var flags : Flags;
 
-    public struct Flags : OptionSetType {
+    public struct Flags : OptionSet {
         public let rawValue: UInt
         public init(rawValue: UInt) { self.rawValue = rawValue }
 

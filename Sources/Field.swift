@@ -38,15 +38,15 @@ public class Field {
     }
 
     init(pointer: UnsafePointer<MYSQL_FIELD>) {
-        self.name = String.fromCString(pointer.memory.name)!
-        self.originalName = String.fromCString(pointer.memory.org_name)!
-        self.table = String.fromCString(pointer.memory.table)!
-        self.originalTable = String.fromCString(pointer.memory.org_table)!
-        self.database = String.fromCString(pointer.memory.db)!
-        self.catalog = String.fromCString(pointer.memory.catalog)!
-        self.length = pointer.memory.length
-        self.maxLength = pointer.memory.max_length
-        self.flags = pointer.memory.flags;
-        self.decimals = pointer.memory.decimals;
+        self.name = String.init(validatingUTF8 : pointer.pointee.name)!
+        self.originalName = String.init(validatingUTF8 : pointer.pointee.org_name)!
+        self.table = String.init(validatingUTF8 : pointer.pointee.table)!
+        self.originalTable = String.init(validatingUTF8 : pointer.pointee.org_table)!
+        self.database = String.init(validatingUTF8 : pointer.pointee.db)!
+        self.catalog = String.init(validatingUTF8 : pointer.pointee.catalog)!
+        self.length = pointer.pointee.length
+        self.maxLength = pointer.pointee.max_length
+        self.flags = pointer.pointee.flags;
+        self.decimals = pointer.pointee.decimals;
     }
 }
