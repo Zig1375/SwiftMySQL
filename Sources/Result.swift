@@ -71,7 +71,7 @@ public class Result {
                 let length = Int(lengths[index]);
 
                 var buffer = [UInt8](repeating: 0, count: length);
-                memcpy(&buffer, val, length);
+                memcpy(&buffer, val!    , length);
 
                 result[field.name] = Value(data : buffer);
             } else {
