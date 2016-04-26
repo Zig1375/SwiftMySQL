@@ -73,10 +73,12 @@ public class Connection {
     }
 
     public func close() {
-        self.state = ConnectionState.DISCONNECTED;
+        if (self.state != .DISCONNECTED) {
+            self.state = ConnectionState.DISCONNECTED;
 
-        ///mysql_close(MYSQL *sock);
-        mysql_close(self.connection);
+            ///mysql_close(MYSQL *sock);
+            mysql_close(self.connection);
+        }
     }
 
     public func escape(value : String) -> String {
