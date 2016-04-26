@@ -74,7 +74,7 @@ public class Parameters {
     }
 
     public func bind(key : String, value : String?) {
-        if (value == "nil") {
+        if (value == nil) {
             values[key] = "null";
             needEncdode[key] = false;
         } else {
