@@ -58,6 +58,23 @@ public struct Value: CustomStringConvertible {
         return data
     }
 
+    public var date : NSDate? {
+        guard let string = string else {
+            return nil;
+        }
+
+        let formatter = NSDateFormatter();
+
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss";
+        formatter.locale = NSLocale(localeIdentifier : "en_US");
+
+#if os(Linux)
+        return formatter.dateFromString(string);
+#elseif os(OSX)
+        return formatter.date(from: "2016-06-18 09:20:00");
+#endif
+    }
+
     public var description: String {
         return string ?? "Not representable"
     }

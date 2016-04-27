@@ -83,6 +83,20 @@ public class Parameters {
         }
     }
 
+    public func bind(key : String, value : NSDate) {
+        let formatter = NSDateFormatter();
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss";
+        formatter.locale = NSLocale(localeIdentifier : "en_US");
+
+#if os(Linux)
+        values[key] = formatter.stringFromDate(value);
+#elseif os(OSX)
+        values[key] = formatter.string(from: value);
+#endif
+
+        needEncdode[key] = false;
+    }
+
     public func toSql(conn : Connection) -> String {
         var nsql = sql;
         for (key, value) in values {
