@@ -1,3 +1,5 @@
+import Foundation
+
 public class Parameters {
     private var sql : String;
     private var values : [String : String] = [String : String]();
