@@ -60,7 +60,7 @@ public class Pool {
         return pc;
     }
 
-    func release(conn : PoolConnection) {
+    func release(_ conn : PoolConnection) {
         dispatch_async(self.accessQueue) {
             self.pool.append(conn);
         }
