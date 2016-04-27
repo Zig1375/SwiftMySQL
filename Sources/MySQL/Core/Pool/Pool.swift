@@ -35,11 +35,15 @@ public class Pool {
         return conn;
     }
 
+    func poolClosed() {
+        countPool -= 1;
+    }
+
     private func poolConnection() -> PoolConnection? {
         if (pool.count == 0) {
             if (countPool < connectionLimit) {
                 countPool += 1;
-                let conn = PoolConnection(config : self.config);
+                let conn = PoolConnection(config : self.config, poolManager : self);
                 if let _ = try? conn.connect() {
                     return conn;
                 }
@@ -53,7 +57,6 @@ public class Pool {
 
         if (!pc.isLife()) {
             // Pool сдох, выдаем следующий
-            countPool -= 1;
             return poolConnection();
         }
 

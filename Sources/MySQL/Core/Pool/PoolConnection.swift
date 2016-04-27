@@ -2,10 +2,17 @@ import Foundation
 
 public class PoolConnection : Connection {
     let expire : NSDate;
+    let poolManager : Pool;
 
-    override init(config : ConnectionConfig) {
+    override init(config : ConnectionConfig, poolManager : Pool) {
         self.expire = NSDate().addingTimeInterval(60);
+        self.poolManager = poolManager;
         super.init(config : config);
+    }
+
+    override deinit {
+        close();
+        self.poolManager.poolClosed();
     }
 
     func isLife() -> Bool {
