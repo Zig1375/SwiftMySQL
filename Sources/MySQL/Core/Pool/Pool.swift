@@ -26,7 +26,7 @@ public class Pool {
         }
     }
 
-    func getConnection() -> PoolConnection? {
+    public func getConnection() -> PoolConnection? {
         var conn : PoolConnection?;
         dispatch_sync(self.accessQueue) {
             conn = self.poolConnection();
@@ -60,7 +60,7 @@ public class Pool {
         return pc;
     }
 
-    func release(_ conn : PoolConnection) {
+    public func release(_ conn : PoolConnection) {
         dispatch_async(self.accessQueue) {
             self.pool.append(conn);
         }
