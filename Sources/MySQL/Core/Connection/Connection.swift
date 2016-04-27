@@ -4,7 +4,7 @@ import CMySQL;
 public class Connection {
     private var config : ConnectionConfig;
     private var connectCalled : Bool = false;
-    private var state : ConnectionState = ConnectionState.DISCONNECTED;
+    private(set) var state : ConnectionState = ConnectionState.DISCONNECTED;
     private let connection : UnsafeMutablePointer<st_mysql>;
 
     public init(config : ConnectionConfig) {
