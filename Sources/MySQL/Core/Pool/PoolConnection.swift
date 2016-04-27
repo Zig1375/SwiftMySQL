@@ -4,13 +4,13 @@ public class PoolConnection : Connection {
     let expire : NSDate;
     let poolManager : Pool;
 
-    override init(config : ConnectionConfig, poolManager : Pool) {
+    init(config : ConnectionConfig, poolManager : Pool) {
         self.expire = NSDate().addingTimeInterval(60);
         self.poolManager = poolManager;
         super.init(config : config);
     }
 
-    override deinit {
+    deinit {
         close();
         self.poolManager.poolClosed();
     }
