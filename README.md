@@ -1,9 +1,9 @@
 ## Install
 
-Now supported only Swift 2.2dev (minimal snapshot from January 25, 2016)
+Now supported only Swift 3.0 (snapshot from April 12, 2016)
 
 ```sh
-$ sudo apt-get install libmysqlclient-dev
+sudo apt-get install libmysqlclient-dev
 ```
 
 In `Package.swift`:
@@ -13,6 +13,27 @@ dependencies: [
     .Package(url: "https://github.com/Zig1375/MySQL.git", majorVersion: 1)
 ]
 ```
+
+
+## Installation (Linux, Apt-based)
+
+1. Install the following system linux libraries:
+
+```sh
+sudo apt-get install autoconf libtool libkqueue-dev libkqueue0 libdispatch-dev libdispatch0 libhttp-parser-dev libcurl4-openssl-dev libhiredis-dev libbsd-dev
+```
+
+2. Install libdispatch:
+```sh
+git clone -b experimental/foundation https://github.com/apple/swift-corelibs-libdispatch.git
+cd swift-corelibs-libdispatch
+git submodule init
+git submodule update
+sh ./autogen.sh
+./configure --with-swift-toolchain=<path-to-swift>/usr --prefix=<path-to-swift>/usr
+make && sudo make install
+```
+
 
 
 ## Introduction
@@ -35,13 +56,30 @@ do {
     // YOUR CODE HERE
 }  catch MysqlError.Error(let error, let errno) {
     print("\(errno) : \(error)");
+} catch {
+    print("Unknown error")
 }
 ```
+
+
+### Pooling connections
+```swift
+import MySQL;
+
+let db_pool = Pool(config : ConnectionConfig(host : "localhost", database : "test", user : "root", password : "1234567"), connectionLimit : 100);
+
+if let conn = db_pool.getConnection() {
+    // YOUR CODE HERE
+
+    db_pool.release(conn);
+}
+```
+
 
 ### Simple query
 
 ```swift
-let result = try conn.query("select * from my_table;");
+let result = try conn.query(sql : "select * from my_table;");
 while let res = result.fetch() {
     print(res);
 }
@@ -50,27 +88,27 @@ while let res = result.fetch() {
 ### Fast fetch row
 
 ```swift
-let result = try conn.fetchRow("select * from my_table where id = 1");  // Returned 'Row?'
+let result = try conn.fetchRow(sql : "select * from my_table where id = 1");  // Returned 'Row?'
 print(result);
 ```
 
 ### Fast fetch all row
 
 ```swift
-let result = try conn.fetchAll("select * from my_table");               // Returned '[Row]'
+let result = try conn.fetchAll(sql : "select * from my_table");               // Returned '[Row]'
 print(result);
 ```
 
 ### Execute query without result
 
 ```swift
-try conn.execute("insert into my_table(id, name) values(1, 'name')");
+try conn.execute(sql : "insert into my_table(id, name) values(1, 'name')");
 print(conn.insertId());
 ```
 
 ### Multiple statement queries
 ```swift
-let result = try conn.query("call test()");
+let result = try conn.query(sql : "call test()");
 if let res = result.fetch() {
     print(res);
 }
@@ -87,7 +125,7 @@ You can use `Parameters` to prepare a query with multiple insertion points, util
 
 ```swift
 let p = Parameters(sql : "SELECT * FROM test.new_table where col1 = {0} and col2 = {1};", values : ["foo", "bar"]);
-let result = try conn.query(p);
+let result = try conn.query(p : p);
 while let res = result.fetch() {
     print(res);
 }
@@ -100,7 +138,7 @@ let p = Parameters(sql : "SELECT * FROM test.new_table where col1 = {col1} and c
 p.bind("col1", value : 123);
 p.bind("col2", value : "foo");
 
-let result = try conn.query(p);
+let result = try conn.query(p : p);
 while let res = result.fetch() {
     print(res);
 }
