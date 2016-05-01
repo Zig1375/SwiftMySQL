@@ -90,11 +90,7 @@ public class Parameters {
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss";
         formatter.locale = NSLocale(localeIdentifier : "en_US");
 
-#if os(Linux)
-        values[key] = formatter.stringFromDate(value);
-#elseif os(OSX)
         values[key] = formatter.string(from: value);
-#endif
 
         needEncdode[key] = false;
     }
