@@ -5,7 +5,12 @@ public class PoolConnection : Connection {
     let poolManager : Pool;
 
     init(config : ConnectionConfig, poolManager : Pool) {
+#if os(Linux)
         self.expire = NSDate().dateByAddingTimeInterval(60);
+#elseif os(OSX)
+        self.expire = NSDate().addingTimeInterval(60);
+#endif
+
         self.poolManager = poolManager;
         super.init(config : config);
     }
