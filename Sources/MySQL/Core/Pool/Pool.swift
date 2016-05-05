@@ -15,7 +15,7 @@ public class Pool {
 
         let _ = Thread() {
             sleep(5);
-            dispatch_async(self.accessQueue) {
+            dispatch_sync(self.accessQueue) {
                 let len = self.pool.count;
                 for index in stride(from: len - 1, to: 0, by: -1) {
                     if (!self.pool[index].isLife()) {
@@ -64,7 +64,7 @@ public class Pool {
     }
 
     public func release(_ conn : PoolConnection) {
-        dispatch_async(self.accessQueue) {
+        dispatch_sync(self.accessQueue) {
             self.pool.append(conn);
         }
     }
