@@ -71,7 +71,7 @@ public struct Value: CustomStringConvertible {
 #if os(Linux)
         return formatter.dateFromString(string);
 #elseif os(OSX)
-        return formatter.date(from: "2016-06-18 09:20:00");
+        return formatter.date(from: string);
 #endif
     }
 
