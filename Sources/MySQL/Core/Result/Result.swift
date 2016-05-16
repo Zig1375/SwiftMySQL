@@ -5,6 +5,8 @@ import Glibc
 import Darwin
 #endif
 
+public typealias Row = [String : Value];
+
 public class Result {
     private let connection : Connection;
     private let mysql_conn : UnsafeMutablePointer<st_mysql>;
@@ -79,7 +81,7 @@ public class Result {
             }
         }
 
-        return Row(values : result);
+        return result;
     }
 
     private func clear() {
