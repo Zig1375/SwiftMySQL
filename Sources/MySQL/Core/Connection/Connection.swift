@@ -82,12 +82,14 @@ public class Connection {
     }
 
     public func escape(value : String) -> String {
-        let readBuffer  = UnsafeMutablePointer<CChar>(allocatingCapacity : 4098)
-        let status = mysql_real_escape_string(self.connection, readBuffer, value, UInt(value.characters.count));
+        let len = value.utf8.count * 4;
+
+        let readBuffer  = UnsafeMutablePointer<CChar>(allocatingCapacity : len)
+        let status = mysql_real_escape_string(self.connection, readBuffer, value, UInt(value.utf8.count));
 
         defer {
-            readBuffer.deinitialize(count : 4098);
-       }
+            readBuffer.deinitialize(count : len);
+        }
 
         if (status > 0) {
             return getText(buf : readBuffer);
