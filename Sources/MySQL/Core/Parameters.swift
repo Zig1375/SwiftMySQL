@@ -20,58 +20,113 @@ public class Parameters {
         }
     }
 
-    public func bind(key : String, value : Int) {
-        values[key] = String(value);
+    public func bind(key : String, value : Int?) {
+        if (value == nil) {
+            values[key] = "null";
+        } else {
+            values[key] = String(value);
+        }
+
         needEncdode[key] = false;
     }
 
-    public func bind(key : String, value : UInt) {
-        values[key] = String(value);
+    public func bind(key : String, value : UInt?) {
+        if (value == nil) {
+            values[key] = "null";
+        } else {
+            values[key] = String(value);
+        }
+
         needEncdode[key] = false;
     }
 
-    public func bind(key : String, value : Int64) {
-        values[key] = String(value);
+    public func bind(key : String, value : Int64?) {
+        if (value == nil) {
+            values[key] = "null";
+        } else {
+            values[key] = String(value);
+        }
+
         needEncdode[key] = false;
     }
 
-    public func bind(key : String, value : UInt64) {
-        values[key] = String(value);
+    public func bind(key : String, value : UInt64?) {
+        if (value == nil) {
+            values[key] = "null";
+        } else {
+            values[key] = String(value);
+        }
+
         needEncdode[key] = false;
     }
 
-    public func bind(key : String, value : Int32) {
-        values[key] = String(value);
+    public func bind(key : String, value : Int32?) {
+        if (value == nil) {
+            values[key] = "null";
+        } else {
+            values[key] = String(value);
+        }
+
         needEncdode[key] = false;
     }
 
-    public func bind(key : String, value : UInt32) {
-        values[key] = String(value);
+    public func bind(key : String, value : UInt32?) {
+        if (value == nil) {
+            values[key] = "null";
+        } else {
+            values[key] = String(value);
+        }
+
         needEncdode[key] = false;
     }
 
-    public func bind(key : String, value : Int16) {
-        values[key] = String(value);
+    public func bind(key : String, value : Int16?) {
+        if (value == nil) {
+            values[key] = "null";
+        } else {
+            values[key] = String(value);
+        }
+
         needEncdode[key] = false;
     }
 
-    public func bind(key : String, value : UInt16) {
-        values[key] = String(value);
+    public func bind(key : String, value : UInt16?) {
+        if (value == nil) {
+            values[key] = "null";
+        } else {
+            values[key] = String(value);
+        }
+
         needEncdode[key] = false;
     }
 
-    public func bind(key : String, value : Int8) {
-        values[key] = String(value);
+    public func bind(key : String, value : Int8?) {
+        if (value == nil) {
+            values[key] = "null";
+        } else {
+            values[key] = String(value);
+        }
+
         needEncdode[key] = false;
     }
 
-    public func bind(key : String, value : UInt8) {
-        values[key] = String(value);
+    public func bind(key : String, value : UInt8?) {
+        if (value == nil) {
+            values[key] = "null";
+        } else {
+            values[key] = String(value);
+        }
+
         needEncdode[key] = false;
     }
 
-    public func bind(key : String, value : Bool) {
-        values[key] = (value) ? "1" : "0";
+    public func bind(key : String, value : Bool?) {
+        if (value == nil) {
+            values[key] = "null";
+        } else {
+            values[key] = ( value ) ? "1" : "0";
+        }
+
         needEncdode[key] = false;
     }
 
@@ -85,12 +140,16 @@ public class Parameters {
         }
     }
 
-    public func bind(key : String, value : NSDate) {
-        let formatter = NSDateFormatter();
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss";
-        formatter.locale = NSLocale(localeIdentifier : "en_US");
+    public func bind(key : String, value : NSDate?) {
+        if (value == nil) {
+            values[key] = "null";
+        } else {
+            let formatter = NSDateFormatter();
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss";
+            formatter.locale = NSLocale(localeIdentifier: "en_US");
 
-        values[key] = formatter.string(from: value);
+            values[key] = formatter.string(from: value);
+        }
 
         needEncdode[key] = false;
     }
