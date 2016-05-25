@@ -24,7 +24,7 @@ public class Parameters {
         if (value == nil) {
             values[key] = "null";
         } else {
-            values[key] = String(value);
+            values[key] = String(value!);
         }
 
         needEncdode[key] = false;
@@ -34,7 +34,7 @@ public class Parameters {
         if (value == nil) {
             values[key] = "null";
         } else {
-            values[key] = String(value);
+            values[key] = String(value!);
         }
 
         needEncdode[key] = false;
@@ -44,7 +44,7 @@ public class Parameters {
         if (value == nil) {
             values[key] = "null";
         } else {
-            values[key] = String(value);
+            values[key] = String(value!);
         }
 
         needEncdode[key] = false;
@@ -54,7 +54,7 @@ public class Parameters {
         if (value == nil) {
             values[key] = "null";
         } else {
-            values[key] = String(value);
+            values[key] = String(value!);
         }
 
         needEncdode[key] = false;
@@ -64,7 +64,7 @@ public class Parameters {
         if (value == nil) {
             values[key] = "null";
         } else {
-            values[key] = String(value);
+            values[key] = String(value!);
         }
 
         needEncdode[key] = false;
@@ -74,7 +74,7 @@ public class Parameters {
         if (value == nil) {
             values[key] = "null";
         } else {
-            values[key] = String(value);
+            values[key] = String(value!);
         }
 
         needEncdode[key] = false;
@@ -84,7 +84,7 @@ public class Parameters {
         if (value == nil) {
             values[key] = "null";
         } else {
-            values[key] = String(value);
+            values[key] = String(value!);
         }
 
         needEncdode[key] = false;
@@ -94,7 +94,7 @@ public class Parameters {
         if (value == nil) {
             values[key] = "null";
         } else {
-            values[key] = String(value);
+            values[key] = String(value!);
         }
 
         needEncdode[key] = false;
@@ -104,7 +104,7 @@ public class Parameters {
         if (value == nil) {
             values[key] = "null";
         } else {
-            values[key] = String(value);
+            values[key] = String(value!);
         }
 
         needEncdode[key] = false;
@@ -114,7 +114,7 @@ public class Parameters {
         if (value == nil) {
             values[key] = "null";
         } else {
-            values[key] = String(value);
+            values[key] = String(value!);
         }
 
         needEncdode[key] = false;
@@ -124,7 +124,7 @@ public class Parameters {
         if (value == nil) {
             values[key] = "null";
         } else {
-            values[key] = ( value ) ? "1" : "0";
+            values[key] = ( value! ) ? "1" : "0";
         }
 
         needEncdode[key] = false;
@@ -148,7 +148,7 @@ public class Parameters {
             formatter.dateFormat = "yyyy-MM-dd HH:mm:ss";
             formatter.locale = NSLocale(localeIdentifier: "en_US");
 
-            values[key] = formatter.string(from: value);
+            values[key] = formatter.string(from: value!);
         }
 
         needEncdode[key] = false;
