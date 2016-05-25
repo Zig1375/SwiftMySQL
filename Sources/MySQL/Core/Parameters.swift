@@ -154,6 +154,11 @@ public class Parameters {
         needEncdode[key] = false;
     }
 
+    public func bind(key : String) {
+        values[key] = "null";
+        needEncdode[key] = false;
+    }
+
     public func toSql(conn : Connection) -> String {
         var nsql = sql;
         for (key, value) in values {
