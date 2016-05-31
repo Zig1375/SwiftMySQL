@@ -148,7 +148,7 @@ public class Parameters {
             formatter.dateFormat = "yyyy-MM-dd HH:mm:ss";
             formatter.locale = NSLocale(localeIdentifier: "en_US");
 
-            values[key] = formatter.string(from: value!);
+            values[key] = "\"" + formatter.string(from: value!) + "\"";
         }
 
         needEncdode[key] = false;
