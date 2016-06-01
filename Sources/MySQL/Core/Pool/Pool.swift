@@ -2,7 +2,7 @@ import Foundation
 import Dispatch
 
 public class Pool {
-    private let accessQueue = dispatch_queue_create("SynchronizedPoolAccess", DISPATCH_QUEUE_SERIAL);
+    private let accessQueue = dispatch_queue_create("SynchronizedPoolAccess", DISPATCH_QUEUE_SERIAL)!;
 
     private var config : ConnectionConfig;
     private var pool : [PoolConnection] = [PoolConnection]();

@@ -14,9 +14,9 @@ class Thread
     class Thread: NSObject
     {
         private var thread: NSThread?
-        private var callback: (Void -> Void)?
+        private var callback: (() -> Void)?
 
-        init(_ callback : Void -> Void) {
+        init(_ callback : () -> Void) {
             super.init()
             self.callback = callback
 

@@ -65,19 +65,19 @@ public class Result {
             return nil;
         }
 
-        let lengths = mysql_fetch_lengths(self.result!)
+        if let lengths = mysql_fetch_lengths(self.result!) {
+            for ( index, field ) in fields().enumerated() {
+                let val = row?[index]
+                if ( val != nil ) {
+                    let length = Int(lengths[index]);
 
-        for (index, field) in fields().enumerated() {
-            let val = row[index]
-            if (val != nil) {
-                let length = Int(lengths[index]);
+                    var buffer = [ UInt8 ](repeating: 0, count: length);
+                    memcpy(&buffer, val!, length);
 
-                var buffer = [UInt8](repeating: 0, count: length);
-                memcpy(&buffer, val!    , length);
-
-                result[field.name] = Value(data : buffer);
-            } else {
-                result[field.name] = Value(data : nil);
+                    result[field.name] = Value(data: buffer);
+                } else {
+                    result[field.name] = Value(data: nil);
+                }
             }
         }
 
