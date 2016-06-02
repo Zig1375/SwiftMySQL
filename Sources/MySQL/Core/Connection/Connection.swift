@@ -25,6 +25,9 @@ public class Connection {
             throw MysqlError.Error(error : getText(buf : mysql_error(self.connection)), errno : mysql_errno(self.connection));
         }
 
+        mysql_options(self.connection, MYSQL_SET_CHARSET_NAME, "utf8");
+        mysql_options(self.connection, MYSQL_INIT_COMMAND, "SET NAMES utf8");
+
         self.state = ConnectionState.CONNECTED;
     }
 
