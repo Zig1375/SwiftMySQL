@@ -1,6 +1,6 @@
 ## Install
 
-Now supported only Swift 3.0 (snapshot from April 25, 2016) `swift-DEVELOPMENT-SNAPSHOT-2016-04-25-a`
+Now supported only Swift 3.0 (snapshot from June 06, 2016) `swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a`
 
 ```sh
 sudo apt-get install libmysqlclient-dev
@@ -13,27 +13,6 @@ dependencies: [
     .Package(url: "https://github.com/Zig1375/MySQL.git", majorVersion: 1)
 ]
 ```
-
-
-## Installation (Linux, Apt-based)
-
-1. Install the following system linux libraries:
-
-```sh
-sudo apt-get install autoconf libtool libkqueue-dev libkqueue0 libdispatch-dev libdispatch0 libhttp-parser-dev libcurl4-openssl-dev libhiredis-dev libbsd-dev
-```
-
-2. Install libdispatch:
-```sh
-git clone -b experimental/foundation https://github.com/apple/swift-corelibs-libdispatch.git
-cd swift-corelibs-libdispatch
-git submodule init
-git submodule update
-sh ./autogen.sh
-./configure --with-swift-toolchain=<path-to-swift>/usr --prefix=<path-to-swift>/usr
-make && sudo make install
-```
-
 
 
 ## Introduction

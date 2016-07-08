@@ -1,8 +1,7 @@
 import Foundation
-import Dispatch
 
 public class Pool {
-    private let accessQueue = dispatch_queue_create("SynchronizedPoolAccess", DISPATCH_QUEUE_SERIAL);
+    private let _lock = NSLock();
 
     private var config : ConnectionConfig;
     private var pool : [PoolConnection] = [PoolConnection]();
@@ -15,24 +14,27 @@ public class Pool {
 
         let _ = Thread() {
             sleep(5);
-            dispatch_sync(self.accessQueue) {
-                let len = self.pool.count;
-                for index in stride(from: len - 1, to: 0, by: -1) {
-                    if (!self.pool[index].isLife()) {
-                        self.pool.remove(at : index);
-                    }
+
+            self._lock.lock();
+
+            let len = self.pool.count;
+            for index in stride(from: len - 1, to: 0, by: -1) {
+                if (!self.pool[index].isLife()) {
+                    self.pool.remove(at : index);
                 }
             }
+
+            self._lock.unlock();
         }
     }
 
     public func getConnection() -> PoolConnection? {
-        var conn : PoolConnection?;
-        dispatch_sync(self.accessQueue) {
-            conn = self.poolConnection();
+        defer {
+            self._lock.unlock();
         }
 
-        return conn;
+        self._lock.lock();
+        return self.poolConnection();
     }
 
     func poolClosed() {
@@ -64,8 +66,8 @@ public class Pool {
     }
 
     public func release(_ conn : PoolConnection) {
-        dispatch_sync(self.accessQueue) {
-            self.pool.append(conn);
-        }
+        self._lock.lock();
+        self.pool.append(conn);
+        self._lock.unlock();
     }
 }

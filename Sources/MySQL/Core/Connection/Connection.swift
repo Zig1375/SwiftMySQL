@@ -105,8 +105,7 @@ public class Connection {
     public func query(sql : String, values : [String?]? = nil) throws -> Result {
         try execute(sql : sql, values : values);
 
-        let result = mysql_store_result(self.connection);
-        if (result == nil) {
+        guard let result = mysql_store_result(self.connection) else {
             throw MysqlError.Error(error : getText(buf : mysql_error(self.connection)), errno : mysql_errno(self.connection));
         }
 
