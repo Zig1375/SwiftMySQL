@@ -3,7 +3,7 @@ import Foundation
 #if os(Linux)
 class Thread
 {
-    init(_ callback : Void -> Void) {
+    init(_ callback : () -> Void) {
         let thread = NSThread(){
             callback();
         };

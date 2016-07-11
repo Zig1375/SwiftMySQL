@@ -23,11 +23,7 @@ public class PoolConnection : Connection {
 
         let compare = NSDate().compare(self.expire);
         let result : Bool;
-#if os(Linux)
-        result = (compare == .OrderedAscending);
-#elseif os(OSX)
         result = (compare == .orderedAscending);
-#endif
 
         if ((!result) || (!self.ping())) {
             self.close();
