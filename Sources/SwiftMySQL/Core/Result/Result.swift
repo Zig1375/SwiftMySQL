@@ -5,7 +5,7 @@ import Glibc
 import Darwin
 #endif
 
-public typealias Row = [String : Value];
+public typealias Row = [String : MysqlValue];
 
 public class Result {
     private let connection : Connection;
@@ -58,7 +58,7 @@ public class Result {
             return nil;
         }
 
-        var result: [String : Value] = [:];
+        var result: [String : MysqlValue] = [:];
 
         if let row = mysql_fetch_row(self.result!) {
             if let lengths = mysql_fetch_lengths(self.result!) {
@@ -70,9 +70,9 @@ public class Result {
                         var buffer = [ UInt8 ](repeating: 0, count: length);
                         memcpy(&buffer, val, length);
 
-                        result[field.name] = Value(data: buffer);
+                        result[field.name] = MysqlValue(data: buffer);
                     } else {
-                        result[field.name] = Value(data: nil);
+                        result[field.name] = MysqlValue(data: nil);
                     }
                 }
             }

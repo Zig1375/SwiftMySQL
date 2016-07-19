@@ -1,6 +1,6 @@
 import Foundation;
 
-public struct Value: CustomStringConvertible {
+public struct MysqlValue: CustomStringConvertible {
     public let data: [UInt8]?;
 
     public init(data : [UInt8]?) {
