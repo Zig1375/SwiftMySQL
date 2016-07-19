@@ -4,8 +4,8 @@ public class PoolConnection : Connection {
     let expire : NSDate;
     let poolManager : Pool;
 
-    init(config : ConnectionConfig, poolManager : Pool) {
-        self.expire = NSDate().addingTimeInterval(60);
+    init(config : ConnectionConfig, poolManager : Pool, poolLifeTime : UInt = 60) {
+        self.expire = NSDate().addingTimeInterval(NSTimeInterval(poolLifeTime));
 
         self.poolManager = poolManager;
         super.init(config : config);

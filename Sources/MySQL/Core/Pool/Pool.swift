@@ -7,10 +7,12 @@ public class Pool {
     private var pool : [PoolConnection] = [PoolConnection]();
     private var countPool : UInt = 0;
     private let connectionLimit : UInt;
+    private let poolLifeTime : UInt;
 
-    public init(config : ConnectionConfig, connectionLimit : UInt = 100) {
+    public init(config : ConnectionConfig, connectionLimit : UInt = 100, poolLifeTime : UInt = 60) {
         self.config = config;
         self.connectionLimit = max(1, connectionLimit);
+        self.poolLifeTime = max(10, poolLifeTime);
 
         let _ = Thread() {
             sleep(5);
@@ -45,7 +47,7 @@ public class Pool {
         if (pool.count == 0) {
             if (countPool < connectionLimit) {
                 countPool += 1;
-                let conn = PoolConnection(config : self.config, poolManager : self);
+                let conn = PoolConnection(config : self.config, poolManager : self, poolLifeTime : self.poolLifeTime);
                 if let _ = try? conn.connect() {
                     return conn;
                 }

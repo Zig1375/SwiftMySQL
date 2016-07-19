@@ -55,6 +55,46 @@ if let conn = db_pool.getConnection() {
 ```
 
 
+### AutoPool
+```swift
+import MySQL;
+
+let db = AutoPool(config : ConnectionConfig(host : "localhost", database : "test", user : "root", password : "1234567"), connectionLimit : 100);
+db.query("select * from table;") {result, debug in
+    if (result == nil) {
+        return;
+    }
+    
+    // YOUR CODE HERE
+}
+
+let p = Parameters(sql : "select * from table where table_id = {table_id}");
+p.bind(key : "table_id", value : 123);
+db.query(p) {result, debug in
+    if (result == nil) {
+        return;
+    }
+    
+    // YOUR CODE HERE
+}
+
+let db = AutoPool(config : ConnectionConfig(host : "localhost", database : "test", user : "root", password : "1234567"), connectionLimit : 100);
+db.fetchRow("select * from table where table_id = 1;") {row, debug in
+    if let r = row {
+        // YOUR CODE HERE
+    }    
+}
+
+let p = Parameters(sql : "select * from table where table_id = {table_id}");
+p.bind(key : "table_id", value : 123);
+db.fetchRow(p) {result, debug in
+    if let r = row {
+        // YOUR CODE HERE
+    } 
+}
+```
+
+
 ### Simple query
 
 ```swift
