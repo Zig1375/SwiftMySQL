@@ -10,21 +10,21 @@ In `Package.swift`:
 ```swift
 dependencies: [
     // Other your packages
-    .Package(url: "https://github.com/Zig1375/MySQL.git", majorVersion: 1)
+    .Package(url: "https://github.com/Zig1375/SwiftMySQL.git", majorVersion: 1)
 ]
 ```
 
 
 ## Introduction
 
-This is a Swift driver for mysql.
+This is a Swift driver for SwiftMySQL.
 
 ## Here is an example on how to use it:
 
 ### Connection
 
 ```swift
-import MySQL;
+import SwiftMySQL;
 
 let config = ConnectionConfig(host : "localhost", database : "test", user : "root", password : "1234567");
 let conn = Connection(config : config);
@@ -33,7 +33,7 @@ do {
     try conn.connect();
 
     // YOUR CODE HERE
-}  catch MysqlError.Error(let error, let errno) {
+}  catch SwiftMySQLError.Error(let error, let errno) {
     print("\(errno) : \(error)");
 } catch {
     print("Unknown error")
@@ -43,7 +43,7 @@ do {
 
 ### Pooling connections
 ```swift
-import MySQL;
+import SwiftMySQL;
 
 let db_pool = Pool(config : ConnectionConfig(host : "localhost", database : "test", user : "root", password : "1234567"), connectionLimit : 100);
 
@@ -57,7 +57,7 @@ if let conn = db_pool.getConnection() {
 
 ### AutoPool
 ```swift
-import MySQL;
+import SwiftMySQL;
 
 let db = AutoPool(config : ConnectionConfig(host : "localhost", database : "test", user : "root", password : "1234567"), connectionLimit : 100);
 db.query("select * from table;") {result, debug in

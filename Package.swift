@@ -1,7 +1,7 @@
 import PackageDescription
 
 let package = Package(
-  name:         "MySQL",
+  name:         "SwiftMySQL",
   targets:      [],
   dependencies: []
 )
