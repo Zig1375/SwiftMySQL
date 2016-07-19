@@ -33,7 +33,7 @@ do {
     try conn.connect();
 
     // YOUR CODE HERE
-}  catch SwiftMySQLError.Error(let error, let errno) {
+}  catch MySQLError.Error(let error, let errno) {
     print("\(errno) : \(error)");
 } catch {
     print("Unknown error")
