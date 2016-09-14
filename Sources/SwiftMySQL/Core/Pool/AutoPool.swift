@@ -1,7 +1,7 @@
 import Foundation
 
-public typealias DBResultCallback = (result : Result?, debug : MysqlDebug?) -> Void
-public typealias DBRowCallback = (row : Row?, debug : MysqlDebug?) -> Void
+public typealias DBResultCallback = (Result?, MysqlDebug?) -> Void
+public typealias DBRowCallback = (Row?, MysqlDebug?) -> Void
 
 class AutoPool {
     private let pool : Pool;
@@ -18,17 +18,17 @@ class AutoPool {
 
             do {
                 let result = try conn.query(sql : sql);
-                callback?(result : result, debug : MysqlDebug(sql : sql));
+                callback?(result, MysqlDebug(sql : sql));
                 return;
             } catch MysqlError.Error(let error, let errno) {
-                callback?(result : nil, debug : MysqlDebug(sql : sql, errno: errno, error : error));
+                callback?(nil, MysqlDebug(sql : sql, errno: errno, error : error));
                 return;
             } catch {
 
             }
         }
 
-        callback?(result : nil, debug : MysqlDebug(sql : sql));
+        callback?(nil, MysqlDebug(sql : sql));
     }
 
     func query(_ p : Parameters, _ callback : DBResultCallback? = nil) {
@@ -42,7 +42,7 @@ class AutoPool {
             return;
         }
 
-        callback?(result : nil, debug : nil);
+        callback?(nil, nil);
     }
 
 
@@ -50,22 +50,22 @@ class AutoPool {
     func fetchRow(_ sql : String, _ callback : DBRowCallback? = nil) {
         self.query(sql) {result, debug in
             if (result == nil) {
-                callback?(row : nil, debug : debug);
+                callback?(nil, debug);
                 return;
             }
 
-            callback?(row : result?.fetch(), debug : debug);
+            callback?(result?.fetch(), debug);
         }
     }
 
     func fetchRow(_ p : Parameters, _ callback : DBRowCallback? = nil) {
         self.query(p) {result, debug in
             if (result == nil) {
-                callback?(row : nil, debug : debug);
+                callback?( nil, debug);
                 return;
             }
 
-            callback?(row : result?.fetch(), debug : debug);
+            callback?(result?.fetch(), debug);
         }
     }
 }

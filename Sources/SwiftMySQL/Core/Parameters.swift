@@ -140,13 +140,13 @@ public class Parameters {
         }
     }
 
-    public func bind(key : String, value : NSDate?) {
+    public func bind(key : String, value : Date?) {
         if (value == nil) {
             values[key] = "null";
         } else {
-            let formatter = NSDateFormatter();
+            let formatter = DateFormatter();
             formatter.dateFormat = "yyyy-MM-dd HH:mm:ss";
-            formatter.locale = NSLocale(localeIdentifier: "en_US");
+            formatter.locale = Locale(identifier: "en_US");
 
             values[key] = "\"" + formatter.string(from: value!) + "\"";
         }

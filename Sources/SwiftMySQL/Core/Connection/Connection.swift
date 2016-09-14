@@ -88,7 +88,7 @@ public class Connection {
     public func escape(value : String) -> String {
         let len = value.utf8.count * 4;
 
-        let readBuffer  = UnsafeMutablePointer<CChar>(allocatingCapacity : len)
+        let readBuffer  = UnsafeMutablePointer<CChar>.allocate(capacity:len);
         let status = mysql_real_escape_string(self.connection, readBuffer, value, UInt(value.utf8.count));
 
         defer {

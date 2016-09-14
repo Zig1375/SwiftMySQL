@@ -14,7 +14,7 @@ public class Pool {
         self.connectionLimit = max(1, connectionLimit);
         self.poolLifeTime = max(10, poolLifeTime);
 
-        let _ = Thread() {
+        zThread(block : {
             sleep(5);
 
             self._lock.lock();
@@ -27,7 +27,7 @@ public class Pool {
             }
 
             self._lock.unlock();
-        }
+        }).start();
     }
 
     public func getConnection() -> PoolConnection? {

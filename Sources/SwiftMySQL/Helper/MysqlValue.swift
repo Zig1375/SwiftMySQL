@@ -51,22 +51,22 @@ public struct MysqlValue: CustomStringConvertible {
             return nil;
         }
 
-        return String(bytes : data!, encoding : NSUTF8StringEncoding);
+        return String(bytes : data!, encoding : String.Encoding.utf8);
     }
 
     public var binary : [UInt8]? {
         return data
     }
 
-    public var date : NSDate? {
+    public var date : Date? {
         guard let string = string else {
             return nil;
         }
 
-        let formatter = NSDateFormatter();
+        let formatter = DateFormatter();
 
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss";
-        formatter.locale = NSLocale(localeIdentifier : "en_US");
+        formatter.locale = Locale(identifier : "en_US");
 
 #if os(Linux)
         return formatter.dateFromString(string);

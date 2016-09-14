@@ -1,6 +1,6 @@
 ## Install
 
-Now supported only Swift 3.0 (snapshot from June 06, 2016) `swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a`
+Now supported only Swift 3.0 (release) 
 
 ```sh
 sudo apt-get install libmysqlclient-dev

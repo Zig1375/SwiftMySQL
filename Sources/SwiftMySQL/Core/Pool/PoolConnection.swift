@@ -1,11 +1,11 @@
 import Foundation
 
 public class PoolConnection : Connection {
-    let expire : NSDate;
+    let expire : Date;
     let poolManager : Pool;
 
     init(config : ConnectionConfig, poolManager : Pool, poolLifeTime : UInt = 60) {
-        self.expire = NSDate().addingTimeInterval(NSTimeInterval(poolLifeTime));
+        self.expire = Date().addingTimeInterval(TimeInterval(poolLifeTime));
 
         self.poolManager = poolManager;
         super.init(config : config);
