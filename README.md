@@ -10,7 +10,7 @@ In `Package.swift`:
 ```swift
 dependencies: [
     // Other your packages
-    .Package(url: "https://github.com/Zig1375/SwiftMySQL.git", majorVersion: 1)
+    .Package(url: "https://github.com/Zig1375/SwiftMySQL.git", majorVersion: 3)
 ]
 ```
 
