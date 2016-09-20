@@ -68,11 +68,7 @@ public struct MysqlValue: CustomStringConvertible {
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss";
         formatter.locale = Locale(identifier : "en_US");
 
-#if os(Linux)
-        return formatter.dateFromString(string);
-#elseif os(OSX)
         return formatter.date(from: string);
-#endif
     }
 
     public var description: String {
