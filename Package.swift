@@ -7,7 +7,7 @@ let package = Package(
 )
 
 #if os(OSX)
-    package.dependencies.append(.Package(url: "https://github.com/Zig1375/CMySQLosx.git", "1.1.1"));
+    package.dependencies.append(.Package(url: "https://github.com/Zig1375/CMySQLosx.git", majorVersion: 1, minor : 1));
 #elseif os(Linux)
     package.dependencies.append(.Package(url: "https://github.com/Zig1375/CMySQL.git", majorVersion: 1, minor : 1));
 #endif
