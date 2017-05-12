@@ -31,6 +31,8 @@ public class Field {
     /// Number of decimals in field
     public let decimals : UInt32;
 
+    public let type : enum_field_types;
+
     public var isUnsigned : Bool {
         get {
             return (self.flags & (1 << 5) != 0)
@@ -48,5 +50,6 @@ public class Field {
         self.maxLength = pointer.pointee.max_length
         self.flags = pointer.pointee.flags;
         self.decimals = pointer.pointee.decimals;
+        self.type = pointer.pointee.type;
     }
 }

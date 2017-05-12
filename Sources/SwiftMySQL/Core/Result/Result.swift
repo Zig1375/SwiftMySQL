@@ -70,9 +70,9 @@ public class Result {
                         var buffer = [ UInt8 ](repeating: 0, count: length);
                         memcpy(&buffer, val, length);
 
-                        result[field.name] = MysqlValue(data: buffer);
+                        result[field.name] = MysqlValue(data: buffer, type : field.type);
                     } else {
-                        result[field.name] = MysqlValue(data: nil);
+                        result[field.name] = MysqlValue(data: nil, type : field.type);
                     }
                 }
             }
