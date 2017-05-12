@@ -31,7 +31,7 @@ public class Field {
     /// Number of decimals in field
     public let decimals : UInt32;
 
-    public let type : enum_field_types;
+    public let type : MysqlFieldType;
 
     public var isUnsigned : Bool {
         get {
@@ -50,6 +50,54 @@ public class Field {
         self.maxLength = pointer.pointee.max_length
         self.flags = pointer.pointee.flags;
         self.decimals = pointer.pointee.decimals;
-        self.type = pointer.pointee.type;
+        self.type = Field.getFieldType(type : pointer.pointee.type);
     }
+
+    static public func getFieldType(type : enum_field_types) -> MysqlFieldType {
+        switch type {
+            case MYSQL_TYPE_NULL:
+                return .MYSQL_NULL;
+
+            case MYSQL_TYPE_FLOAT,
+                 MYSQL_TYPE_DOUBLE:
+                return .MYSQL_DOUBLE;
+
+            case MYSQL_TYPE_TINY,
+                 MYSQL_TYPE_SHORT,
+                 MYSQL_TYPE_LONG,
+                 MYSQL_TYPE_INT24,
+                 MYSQL_TYPE_LONGLONG:
+                return .MYSQL_INTEGER;
+
+            case MYSQL_TYPE_TIMESTAMP,
+                 MYSQL_TYPE_DATE,
+                 MYSQL_TYPE_TIME,
+                 MYSQL_TYPE_DATETIME,
+                 MYSQL_TYPE_YEAR,
+                 MYSQL_TYPE_NEWDATE:
+                return .MYSQL_DATE;
+
+            case MYSQL_TYPE_DECIMAL,
+                 MYSQL_TYPE_NEWDECIMAL:
+                return .MYSQL_DOUBLE;
+
+            case MYSQL_TYPE_TINY_BLOB,
+                 MYSQL_TYPE_MEDIUM_BLOB,
+                 MYSQL_TYPE_LONG_BLOB,
+                 MYSQL_TYPE_BLOB:
+                return .MYSQL_BINARY;
+
+            default:
+                return .MYSQL_STRING;
+        }
+    }
+}
+
+public enum MysqlFieldType {
+    case MYSQL_NULL;
+    case MYSQL_DOUBLE;
+    case MYSQL_INTEGER;
+    case MYSQL_DATE;
+    case MYSQL_BINARY;
+    case MYSQL_STRING;
 }

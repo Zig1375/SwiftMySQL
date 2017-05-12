@@ -1,53 +1,37 @@
 import Foundation;
-import CMySQL;
 
 public struct MysqlValue: CustomStringConvertible {
     public let data: [UInt8]?;
-    private let type : enum_field_types;
+    public let type : MysqlFieldType;
 
-    public init(data : [UInt8]?, type : enum_field_types) {
+    public init(data : [UInt8]?, type : MysqlFieldType) {
         self.data = data;
         self.type = type;
     }
 
     public func get() -> Any? {
         switch type {
-            case MYSQL_TYPE_NULL:
+            case MysqlFieldType.MYSQL_NULL:
                 return nil;
 
-            case MYSQL_TYPE_FLOAT,
-                 MYSQL_TYPE_DOUBLE:
+            case MysqlFieldType.MYSQL_DOUBLE :
                 return self.double;
 
-            case MYSQL_TYPE_TINY,
-                 MYSQL_TYPE_SHORT,
-                 MYSQL_TYPE_LONG,
-                 MYSQL_TYPE_INT24,
-                 MYSQL_TYPE_LONGLONG:
+            case MysqlFieldType.MYSQL_INTEGER :
                 return self.integer;
 
-            case MYSQL_TYPE_TIMESTAMP,
-                 MYSQL_TYPE_DATE,
-                 MYSQL_TYPE_TIME,
-                 MYSQL_TYPE_DATETIME,
-                 MYSQL_TYPE_YEAR,
-                 MYSQL_TYPE_NEWDATE:
+            case MysqlFieldType.MYSQL_DATE :
                 return self.date;
 
-            case MYSQL_TYPE_DECIMAL,
-                 MYSQL_TYPE_NEWDECIMAL:
-                return self.double;
-
-            case MYSQL_TYPE_TINY_BLOB,
-                 MYSQL_TYPE_MEDIUM_BLOB,
-                 MYSQL_TYPE_LONG_BLOB,
-                 MYSQL_TYPE_BLOB:
+            case MysqlFieldType.MYSQL_BINARY :
                 return self.binary;
 
             default:
                 return self.string;
         }
     }
+
+
 
     public var float: Float? {
         guard let string = string else {
