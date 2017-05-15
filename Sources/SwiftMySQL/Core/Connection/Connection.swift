@@ -109,7 +109,7 @@ public class Connection {
             throw MysqlError.Error(error : getText(buf : mysql_error(self.connection)), errno : mysql_errno(self.connection));
         }
 
-        return Result(connection : self, mysql_conn : self.connection, result : result);
+        return Result(connection : self, mysql_conn : self.connection, result : result, sql : sql);
     }
 
     public func query(p : Parameters) throws -> Result {

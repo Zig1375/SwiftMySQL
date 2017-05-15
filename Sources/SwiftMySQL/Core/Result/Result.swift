@@ -13,11 +13,13 @@ public class Result {
     private var result : UnsafeMutablePointer<st_mysql_res>?;
     private var lastFields : [Field]?;
     private var isFinished : Bool = false;
+    public let sql : String;
 
-    init(connection : Connection, mysql_conn : UnsafeMutablePointer<st_mysql>, result : UnsafeMutablePointer<st_mysql_res>) {
+    init(connection : Connection, mysql_conn : UnsafeMutablePointer<st_mysql>, result : UnsafeMutablePointer<st_mysql_res>, sql : String) {
         self.connection = connection;
         self.mysql_conn = mysql_conn;
         self.result = result
+        self.sql = sql;
     }
 
     deinit {
