@@ -85,7 +85,12 @@ public class Field {
                  MYSQL_TYPE_MEDIUM_BLOB,
                  MYSQL_TYPE_LONG_BLOB,
                  MYSQL_TYPE_BLOB:
-                return .MYSQL_BINARY;
+
+                if ( (self.flags & UInt32(BINARY_FLAG)) != 0) {
+                    return .MYSQL_BINARY;
+                }
+
+                return .MYSQL_STRING;
 
             default:
                 return .MYSQL_STRING;
