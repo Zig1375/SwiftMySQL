@@ -50,10 +50,10 @@ public class Field {
         self.maxLength = pointer.pointee.max_length
         self.flags = pointer.pointee.flags;
         self.decimals = pointer.pointee.decimals;
-        self.type = Field.getFieldType(type : pointer.pointee.type);
+        self.type = Field.getFieldType(type : pointer.pointee.type, flags : pointer.pointee.flags);
     }
 
-    static public func getFieldType(type : enum_field_types) -> MysqlFieldType {
+    static public func getFieldType(type : enum_field_types, flags : UInt32) -> MysqlFieldType {
         switch type {
             case MYSQL_TYPE_NULL:
                 return .MYSQL_NULL;
@@ -86,7 +86,7 @@ public class Field {
                  MYSQL_TYPE_LONG_BLOB,
                  MYSQL_TYPE_BLOB:
 
-                if ( (self.flags & UInt32(BINARY_FLAG)) != 0) {
+                if ( (flags & UInt32(BINARY_FLAG)) != 0) {
                     return .MYSQL_BINARY;
                 }
 
