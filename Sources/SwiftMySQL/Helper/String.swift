@@ -2,7 +2,7 @@ import Foundation
 
 extension String {
     func replace(pattern: String, template: String) -> String {
-        let regex = try! RegularExpression(pattern: pattern, options: .caseInsensitive);
+        let regex = try! RegularExpressionType(pattern: pattern, options: .caseInsensitive);
         return regex.stringByReplacingMatches(in: self, options: [], range: NSRange(0..<self.utf16.count), withTemplate: template)
     }
 }

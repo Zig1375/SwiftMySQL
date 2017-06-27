@@ -14,18 +14,18 @@ public class ConnectionConfig {
 
         static let None = 0
 
-        static let Compress = CLIENT_COMPRESS
-        static let FoundRows = CLIENT_FOUND_ROWS
-        static let IgnoreSigPipe = CLIENT_IGNORE_SIGPIPE
-        static let IgnoreSpace = CLIENT_IGNORE_SPACE
-        static let Interactive = CLIENT_INTERACTIVE
-        static let LocalFiles = CLIENT_LOCAL_FILES
-        static let MultiResults = CLIENT_MULTI_RESULTS
-        static let MultiStatements = CLIENT_MULTI_STATEMENTS
-        static let NoSchema = CLIENT_NO_SCHEMA
-        static let ODBC = CLIENT_ODBC
-        static let SSL = CLIENT_SSL
-        static let RememberOptions = CLIENT_REMEMBER_OPTIONS
+        static let Compress        = CLIENT_COMPRESS;
+        static let FoundRows       = CLIENT_FOUND_ROWS;
+        static let IgnoreSigPipe   = CLIENT_IGNORE_SIGPIPE;
+        static let IgnoreSpace     = CLIENT_IGNORE_SPACE;
+        static let Interactive     = CLIENT_INTERACTIVE;
+        static let LocalFiles      = CLIENT_LOCAL_FILES;
+        static let MultiResults    = CLIENT_MULTI_RESULTS;
+        static let MultiStatements = CLIENT_MULTI_STATEMENTS;
+        static let NoSchema        = CLIENT_NO_SCHEMA;
+        static let ODBC            = CLIENT_ODBC;
+        static let SSL             = CLIENT_SSL;
+        static let RememberOptions = CLIENT_REMEMBER_OPTIONS;
     }
 
 
