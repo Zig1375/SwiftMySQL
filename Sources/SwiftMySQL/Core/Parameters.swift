@@ -164,7 +164,7 @@ public class Parameters {
         for (key, value) in values {
             let b = needEncdode[key];
             if ((b != nil) && (b!)) {
-                nsql = nsql.replace(pattern : "\\{\(key)\\}", template : "\"" + conn.escape(value : conn.escape(value : value)) + "\"");
+                nsql = nsql.replace(pattern : "\\{\(key)\\}", template : "'" + conn.escape(value : conn.escape(value : value)).replace(pattern : "\\\\\\\\\\\\\"", template : "\"") + "'");
             } else {
                 nsql = nsql.replace(pattern : "\\{\(key)\\}", template : value);
             }
