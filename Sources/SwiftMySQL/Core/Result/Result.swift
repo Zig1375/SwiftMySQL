@@ -13,6 +13,7 @@ public class Result {
     private var result : UnsafeMutablePointer<st_mysql_res>?;
     private var lastFields : [Field]?;
     private var isFinished : Bool = false;
+    private var released : Bool = false;
     public let sql : String;
 
     init(connection : Connection, mysql_conn : UnsafeMutablePointer<st_mysql>, result : UnsafeMutablePointer<st_mysql_res>, sql : String) {
@@ -23,8 +24,15 @@ public class Result {
     }
 
     deinit {
-        while(nextRowset()){};
-        clear();
+        release();
+    }
+
+    public func release() {
+        if (!released) {
+            released = true;
+            while (nextRowset()) {};
+            clear();
+        }
     }
 
     public func count() -> Int {
