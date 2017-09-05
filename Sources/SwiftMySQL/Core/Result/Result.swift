@@ -5,7 +5,7 @@ import Glibc
 import Darwin
 #endif
 
-public typealias Row = [String : MysqlValue];
+public typealias Row = OrderedDictionary<String, MysqlValue>;
 
 public class Result {
     private let connection : Connection;
