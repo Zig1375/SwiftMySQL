@@ -15,18 +15,20 @@ public class Pool {
         self.poolLifeTime = max(10, poolLifeTime);
 
         zThread(block : {
-            sleep(5);
+            while(true) {
+                sleep(5);
 
-            self._lock.lock();
+                self._lock.lock();
 
-            let len = self.pool.count;
-            for index in stride(from: len - 1, to: 0, by: -1) {
-                if (!self.pool[index].isLife()) {
-                    self.pool.remove(at : index);
+                let len = self.pool.count;
+                for index in stride(from: len - 1, to: 0, by: -1) {
+                    if (!self.pool[index].isLife()) {
+                        self.pool.remove(at: index);
+                    }
                 }
-            }
 
-            self._lock.unlock();
+                self._lock.unlock();
+            }
         }).start();
     }
 
@@ -68,8 +70,10 @@ public class Pool {
     }
 
     public func release(_ conn : PoolConnection) {
-        self._lock.lock();
-        self.pool.append(conn);
-        self._lock.unlock();
+        if (conn.isLife()) {
+            self._lock.lock();
+            self.pool.append(conn);
+            self._lock.unlock();
+        }
     }
 }
