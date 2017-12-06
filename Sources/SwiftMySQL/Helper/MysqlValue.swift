@@ -1,33 +1,41 @@
 import Foundation;
 
 public struct MysqlValue: CustomStringConvertible {
-    public let data: [UInt8]?;
+    public let data: Data?;
+    public let str : String?;
     public let type : MysqlFieldType;
 
-    public init(data : [UInt8]?, type : MysqlFieldType) {
+    public init(data : Data?, type : MysqlFieldType) {
         self.data = data;
+        self.str  = nil;
+        self.type = type;
+    }
+
+    public init(string : String, type : MysqlFieldType) {
+        self.str  = string;
+        self.data = nil;
         self.type = type;
     }
 
     public func get() -> Any? {
         switch type {
-            case MysqlFieldType.MYSQL_NULL:
-                return nil;
+        case MysqlFieldType.MYSQL_NULL:
+            return nil;
 
-            case MysqlFieldType.MYSQL_DOUBLE :
-                return self.double;
+        case MysqlFieldType.MYSQL_DOUBLE :
+            return self.double;
 
-            case MysqlFieldType.MYSQL_INTEGER :
-                return self.integer;
+        case MysqlFieldType.MYSQL_INTEGER :
+            return self.integer;
 
-            case MysqlFieldType.MYSQL_DATE :
-                return self.date;
+        case MysqlFieldType.MYSQL_DATE :
+            return self.date;
 
-            case MysqlFieldType.MYSQL_BINARY :
-                return self.binary;
+        case MysqlFieldType.MYSQL_BINARY :
+            return self.binary;
 
-            default:
-                return self.string;
+        default:
+            return self.string;
         }
     }
 
@@ -55,12 +63,12 @@ public struct MysqlValue: CustomStringConvertible {
         }
 
         switch string {
-            case "TRUE", "True", "true", "yes", "1", "t", "y":
-                return true;
-            case "FALSE", "False", "false", "no", "0", "f", "n":
-                return false;
-            default:
-                return nil;
+        case "TRUE", "True", "true", "yes", "1", "t", "y":
+            return true;
+        case "FALSE", "False", "false", "no", "0", "f", "n":
+            return false;
+        default:
+            return nil;
         }
     }
 
@@ -73,14 +81,14 @@ public struct MysqlValue: CustomStringConvertible {
     }
 
     public var string: String? {
-        guard (data != nil) else {
+        guard (self.str != nil) else {
             return nil;
         }
 
-        return String(bytes : data!, encoding : String.Encoding.utf8);
+        return self.str;
     }
 
-    public var binary : [UInt8]? {
+    public var binary : Data? {
         return data
     }
 

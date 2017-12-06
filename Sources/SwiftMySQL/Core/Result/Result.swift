@@ -1,3 +1,4 @@
+import Foundation
 import CMySQL;
 #if os(Linux)
 import Glibc
@@ -75,12 +76,13 @@ public class Result {
 
                 for ( index, field ) in fields().enumerated() {
                     if let val = row[index] {
-                        let length = Int(lengths[index]);
-
-                        var buffer = [ UInt8 ](repeating: 0, count: length);
-                        memcpy(&buffer, val, length);
-
-                        result[field.name] = MysqlValue(data: buffer, type : field.type);
+                        if (field.type == MysqlFieldType.MYSQL_BINARY) {
+                            let data = Data(bytes: UnsafeRawPointer(val), count: Int(lengths[index]));
+                            result[field.name] = MysqlValue(data: data, type : field.type);
+                        } else {
+                            let str = String(validatingUTF8: val) ?? "";
+                            result[field.name] = MysqlValue(string: str, type : field.type);
+                        }
                     } else {
                         result[field.name] = MysqlValue(data: nil, type : field.type);
                     }
