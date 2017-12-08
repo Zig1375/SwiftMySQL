@@ -81,8 +81,12 @@ public struct MysqlValue: CustomStringConvertible {
     }
 
     public var string: String? {
-        guard (self.str != nil) else {
-            return nil;
+        if let str = self.str {
+            return str;
+        }
+
+        if let data = self.data {
+            return String(data: data, encoding: .utf8);
         }
 
         return self.str;
