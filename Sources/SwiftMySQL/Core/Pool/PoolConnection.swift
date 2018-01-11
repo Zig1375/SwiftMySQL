@@ -22,8 +22,7 @@ public class PoolConnection : Connection {
         }
 
         let compare = NSDate().compare(self.expire);
-        let result : Bool;
-        result = ((compare == .orderedAscending) || (!self.ping()));
+        let result : Bool = ((compare == .orderedAscending) && (self.ping()));
 
         if (!result) {
             self.close();
