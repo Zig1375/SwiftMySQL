@@ -117,11 +117,3 @@ extension OrderedDictionary : Sequence {
         })
     }
 }
-
-public func ==<Key: Equatable, Value: Equatable>(lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) -> Bool {
-    return lhs._keys == rhs._keys && lhs._dictionary == rhs._dictionary
-}
-
-public func !=<Key: Equatable, Value: Equatable>(lhs: OrderedDictionary<Key, Value>, rhs: OrderedDictionary<Key, Value>) -> Bool {
-    return lhs._keys != rhs._keys || lhs._dictionary != rhs._dictionary
-}
