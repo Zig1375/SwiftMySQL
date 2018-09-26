@@ -9,6 +9,12 @@ public struct Row {
         get {
             return self.map[key]
         }
+    }
+
+    public subscript(key: String) -> Any? {
+        get {
+            return self.map[key]?.get()
+        }
         set {
             self.userMap[key] = newValue;
         }
