@@ -17,7 +17,7 @@ public struct Row {
         self.order = order;
     }
 
-    mutating public func set(name: String, value: MysqlValue) {
+    mutating public func add(name: String, value: MysqlValue) {
         self.map[name] = value;
     }
 
