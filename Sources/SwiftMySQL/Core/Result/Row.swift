@@ -9,14 +9,8 @@ public struct Row {
         get {
             return self.map[key]
         }
-    }
-
-    public subscript(key: String) -> Any? {
-        get {
-            return self.map[key]?.get()
-        }
         set {
-            self.userMap[key] = newValue;
+            self.map[key] = newValue;
         }
     }
 
@@ -28,14 +22,6 @@ public struct Row {
         self.map[key] = value;
     }
 
-    mutating public func addCustom(key: String, value: Any) {
-        self.userMap[key] = value;
-
-        if (!self.order.contains(key)) {
-            self.order.append(key);
-        }
-    }
-
     public var description : String {
         var result = [String]();
         for (key, val) in self {
@@ -43,16 +29,6 @@ public struct Row {
         }
 
         return result.joined(separator: ", ");
-    }
-
-    public func iterate(_ closure: (String, Any) -> Void) {
-        for key in self.order {
-            if let val = self.userMap[key] {
-                closure(key, val);
-            } else if let val = self.map[key], let v = val.get() {
-                closure(key, v);
-            }
-        }
     }
 }
 
