@@ -3,14 +3,13 @@ import Foundation
 public struct Row {
     public let order: [String];
     private(set) var map = [String: MysqlValue]();
-    public var skipNil: Bool = true;
 
     public subscript(key: String) -> MysqlValue? {
         get {
             return self.map[key]
         }
         set {
-            self.map[name] = newValue;
+            self.map[key] = newValue;
         }
     }
 
@@ -37,23 +36,12 @@ extension Row : Sequence {
         var index = 0
         return AnyIterator({ () -> (String, MysqlValue)? in
             if index >= self.order.count {
-                return nil;
-            } else {
-                let key = self.order[index];
-                index += 1;
-
-                if (self.skipNil) {
-                    while ((self.map[key]?.data == nil) && (index < self.order.count)) {
-                        let key = self.order[index];
-                        index += 1;
-                    }
-
-                    if index >= self.order.count {
-                        return nil;
-                    }
-                }
-
-                return (key, self.map[key]!);
+                return nil
+            }
+            else {
+                let key = self.order[index]
+                index += 1
+                return (key, self.map[key]!)
             }
         })
     }
