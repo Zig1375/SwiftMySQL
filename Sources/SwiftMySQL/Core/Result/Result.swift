@@ -78,13 +78,13 @@ public class Result {
                     if let val = row[index] {
                         if (field.type == MysqlFieldType.MYSQL_BINARY) {
                             let data = Data(bytes: UnsafeRawPointer(val), count: Int(lengths[index]));
-                            result.add(name: field.name, value: MysqlValue(data: data, type : field.type));
+                            result.add(key: field.name, value: MysqlValue(data: data, type : field.type));
                         } else {
                             let str = String(validatingUTF8: val) ?? "";
-                            result.add(name: field.name, value: MysqlValue(string: str, type : field.type));
+                            result.add(key: field.name, value: MysqlValue(string: str, type : field.type));
                         }
                     } else {
-                        result.add(name: field.name, value: MysqlValue(data: nil, type : field.type));
+                        result.add(key: field.name, value: MysqlValue(data: nil, type : field.type));
                     }
                 }
             }

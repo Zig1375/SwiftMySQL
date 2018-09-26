@@ -1,7 +1,7 @@
 import Foundation
 
 public struct Row {
-    public let order: [String];
+    private(set) var order: [String];
     private(set) var map = [String: MysqlValue]();
     private(set) var userMap = [String: Any]();
 
@@ -18,8 +18,16 @@ public struct Row {
         self.order = order;
     }
 
-    mutating public func add(name: String, value: MysqlValue) {
+    mutating public func add(key: String, value: MysqlValue) {
         self.map[name] = value;
+    }
+
+    mutating public func addCustom(key: String, value: Any) {
+        self.userMap[key] = value;
+
+        if (!self.order.contains(key)) {
+            self.order.append(key);
+        }
     }
 
     public var description : String {
