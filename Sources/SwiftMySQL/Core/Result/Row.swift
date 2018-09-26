@@ -8,14 +8,26 @@ public struct Row {
         get {
             return self.map[key]
         }
+        set {
+            self.map[name] = newValue;
+        }
     }
 
     public init(order: [String]) {
         self.order = order;
     }
 
-    mutating public func add(name: String, value: MysqlValue) {
+    mutating public func set(name: String, value: MysqlValue) {
         self.map[name] = value;
+    }
+
+    public var description : String {
+        var result = [String]();
+        for (key, val) in self {
+            result.append("\"\(key)\" : \"\(val)\"");
+        }
+
+        return result.joined(separator: ", ");
     }
 }
 
