@@ -3,13 +3,14 @@ import Foundation
 public struct Row {
     public let order: [String];
     private(set) var map = [String: MysqlValue]();
+    private(set) var userMap = [String: Any]();
 
     public subscript(key: String) -> MysqlValue? {
         get {
             return self.map[key]
         }
         set {
-            self.map[key] = newValue;
+            self.userMap[key] = newValue;
         }
     }
 
@@ -29,6 +30,16 @@ public struct Row {
 
         return result.joined(separator: ", ");
     }
+
+    public func iterate(_ closure: (String, Any) -> Void) {
+        for key in self.order {
+            if let val = self.userMap[key] {
+                closure(key, val);
+            } else if let val = self.map[key], let v = val.get() {
+                closure(key, v);
+            }
+        }
+    }
 }
 
 extension Row : Sequence {
@@ -37,8 +48,7 @@ extension Row : Sequence {
         return AnyIterator({ () -> (String, MysqlValue)? in
             if index >= self.order.count {
                 return nil
-            }
-            else {
+            } else {
                 let key = self.order[index]
                 index += 1
                 return (key, self.map[key]!)
