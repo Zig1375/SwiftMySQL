@@ -19,7 +19,7 @@ public struct Row {
     }
 
     mutating public func add(key: String, value: MysqlValue) {
-        self.map[name] = value;
+        self.map[key] = value;
     }
 
     mutating public func addCustom(key: String, value: Any) {
