@@ -1,9 +1,8 @@
 import Foundation
 
 public struct Row {
-    private(set) var order: [String];
+    public let order: [String];
     private(set) var map = [String: MysqlValue]();
-    private(set) var userMap = [String: Any]();
 
     public subscript(key: String) -> MysqlValue? {
         get {
